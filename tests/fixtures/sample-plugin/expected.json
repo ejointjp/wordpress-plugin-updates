@@ -1,0 +1,15 @@
+{
+  "name": "Sample Plugin",
+  "slug": "sample-plugin",
+  "version": "1.2.3",
+  "requires": "6.4",
+  "requires_php": "7.4",
+  "tested": "7.1",
+  "author": "Takashi Fujisaki",
+  "last_updated": "2026-10-04 12:00:00",
+  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/sample-plugin/sample-plugin-1.2.3.zip",
+  "sections": {
+    "description": "<p>Sample Plugin does <strong>one thing</strong> and uses <code>wp-sitemap.xml</code>.</p>\n<h4>What it does</h4>\n<ul><li>First item with a <a href=\"https://example.com/a?b=1&amp;c=2\">link</a></li><li>Second item that continues on the next line</li></ul>\n<p>Second paragraph with &lt;b&gt;raw HTML&lt;/b&gt;.</p>",
+    "changelog": "<h4>1.2.3</h4>\n<ul><li>Fixed a bug.</li></ul>\n<h4>1.2.2</h4>\n<ul><li>Initial release.</li></ul>"
+  }
+}
