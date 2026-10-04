@@ -1,0 +1,15 @@
+{
+  "name": "Ferryman",
+  "slug": "ferryman",
+  "version": "1.0.1",
+  "requires": "7.0",
+  "requires_php": "8.0",
+  "tested": "7.1",
+  "author": "Takashi Fujisaki",
+  "last_updated": "2026-10-04 15:14:29",
+  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/ferryman/ferryman-1.0.1.zip",
+  "sections": {
+    "description": "<p>ローカルと本番のWordPressのあいだで、データベースだけを双方向に移送します。移送するときに、URLなどをシリアライズに対応した形で安全に置換します。</p>\n<ul><li><strong>pull</strong>（本番 → ローカル）: ローカルのDBを上書きします</li><li><strong>push</strong>（ローカル → 本番）: 本番のDBを上書きします。実行の前に、本番側で対象のテーブルを自動でバックアップします</li><li><strong>ファイル同期</strong>: uploads（メディア）のファイルを、本番からローカルへ取得します。追加と更新だけで、ローカルにしかないファイルは消しません</li><li><strong>プラグイン同期</strong>: プラグインの一覧をJSONで書き出し、別のサイトで足りないプラグインをwordpress.orgからまとめてインストールします</li></ul>\n<p>同じプラグインを本番とローカルの両方に入れ、管理画面の「動作モード」で役割を切り替えます。ローカルは「コントローラ」、本番は「コンパニオン」にします。</p>\n<p>通信はHMAC-SHA256の署名とHTTPSで保護します。本番側の接続と各方向の許可は、初期値がすべてOFFです。移行する間だけONにしてください。</p>\n<p>更新の確認のために、配布元のGitHub（<code>raw.githubusercontent.com</code>）から小さなファイル（<code>info.json</code>）を取得します。サイトのURLやデータは送りません。</p>",
+    "changelog": "<h4>1.0.1</h4>\n<ul><li>更新チェックを追加しました。新しい版がプラグイン一覧に通知され、そこから更新できます。</li><li>必要な環境をWordPress 7.0以上、PHP 8.0以上にしました。</li></ul>\n<h4>1.0.0</h4>\n<ul><li>最初の版。</li></ul>"
+  }
+}
