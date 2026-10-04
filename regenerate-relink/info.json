@@ -1,0 +1,15 @@
+{
+  "name": "Regenerate & Relink – Thumbnails, Image URLs & Media Cleanup",
+  "slug": "regenerate-relink",
+  "version": "0.1.1",
+  "requires": "6.6",
+  "requires_php": "7.4",
+  "tested": "7.1",
+  "author": "Takashi Fujisaki",
+  "last_updated": "2026-10-04 14:38:12",
+  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/regenerate-relink/regenerate-relink-0.1.1.zip",
+  "sections": {
+    "description": "<p>WordPress bakes image size file names into your post content the moment you insert an image. When a size definition changes later — a new theme, new media settings — regenerating thumbnails is not enough: the URLs in your content still point to the old files, leaving broken images or outdated dimensions. Unused thumbnails pile up and waste disk space.</p>\n<p>Regenerate &amp; Relink fixes the whole chain, safely:</p>\n<ul><li><strong>Diagnose</strong> – list every registered image size with file counts, disk usage, how often it is used in content, and which files need regeneration.</li><li><strong>Regenerate</strong> – rebuild intermediate sizes from the original images. Never from <code>-scaled</code> copies.</li><li><strong>Relink</strong> – update image URLs, <code>width</code> / <code>height</code> attributes and <code>[caption]</code> widths in post content to match the current definitions. Only the file name part of the URL is touched — your CDN and site structure are preserved.</li><li><strong>Clean up</strong> – quarantine files that are no longer referenced anywhere, instead of deleting them. Restore anytime; auto-purge after 30 days (configurable).</li><li><strong>Dry-run first</strong> – every stage shows a full preview before touching anything. Skipped items are reported with reasons and links.</li><li><strong>WP-CLI</strong> – scan, review reports and apply from the command line.</li></ul>\n<p>The plugin never changes your image size definitions. It detects what was changed elsewhere — Settings &gt; Media, your theme&#x27;s <code>add_image_size()</code> — and brings files and content back in sync.</p>",
+    "changelog": "<h4>0.1.1</h4>\n<ul><li>Added an update checker. New versions now appear on the Plugins screen and can be installed from there.</li></ul>\n<h4>0.1.0</h4>\n<ul><li>Initial release.</li></ul>"
+  }
+}
