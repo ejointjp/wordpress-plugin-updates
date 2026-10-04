@@ -1,0 +1,15 @@
+{
+  "name": "Bulk Last Modified Locker",
+  "slug": "bulk-last-modified-locker",
+  "version": "1.0.1",
+  "requires": "6.7",
+  "requires_php": "8.0",
+  "tested": "7.1",
+  "author": "Takashi Fujisaki",
+  "last_updated": "2026-10-04 08:51:34",
+  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/bulk-last-modified-locker/bulk-last-modified-locker-1.0.1.zip",
+  "sections": {
+    "description": "<p>Fixing a typo should not make a three-year-old article look brand new. Bulk Last Modified Locker keeps the last modified date of your published posts exactly where it was, no matter how many times you edit them.</p>\n<p>There is nothing to set up per post. Activate the plugin and the lock applies to every published post of every public post type at once.</p>\n<ul><li>Applies in bulk — no per-post switch to remember, so nothing slips through</li><li>Covers every public post type, including custom post types added later. Exclude specific post types on the settings screen if you need to</li><li>Bump the modified date on purpose: tick &quot;Bump the modified date on this save&quot; in the block editor sidebar when an update deserves a new date. The tick applies to that save only and is never stored</li><li>Made a mistake? Reset the modified date back to the publish date from the posts list (bulk action or row action) or from the block editor sidebar</li><li>New posts still get a correct modified date when they are first published</li><li>Need the dates to move again for a while? Turn the lock off on the settings screen. The reset actions keep working while it is off, so you can still fix dates that already moved</li><li>No database tables and no scheduled events. Two option rows and a short-lived cache of the update information, nothing else</li><li>To check for updates, it requests a small file (<code>info.json</code>) from GitHub (<code>raw.githubusercontent.com</code>), where the plugin is distributed. The request does not include your site&#x27;s URL or any site data. It makes no other external requests</li></ul>",
+    "changelog": "<h4>1.0.1</h4>\n<ul><li>Added an update checker. New versions now appear on the Plugins screen and can be installed from there.</li></ul>\n<h4>1.0.0</h4>\n<ul><li>Initial release.</li></ul>"
+  }
+}
