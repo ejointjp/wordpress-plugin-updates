@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    # 共通workflowが<slug>/へ配布物をコミットするたびに走らせない
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/**'
+  pull_request:
+
+# 連続pushで古い実行を打ち切る
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test make_info.py
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # 標準ライブラリだけで動くので、ランナーに入っているPython 3をそのまま使う
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v

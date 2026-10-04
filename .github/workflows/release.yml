@@ -1,0 +1,171 @@
+name: Release
+
+# 各プラグインのリポジトリから呼ぶ共通のworkflow。vで始まるタグのpushで、
+# 配布するzipと更新情報（info.json）を作り、このリポジトリの<slug>/へコミットする。
+#
+# 呼び出し側（プラグインのリポジトリの.github/workflows/release.yml）:
+#
+#   on:
+#     push:
+#       tags: ['v*']
+#   jobs:
+#     release:
+#       uses: ejointjp/wordpress-plugin-updates/.github/workflows/release.yml@main
+#       secrets:
+#         deploy_key: ${{ secrets.UPDATES_DEPLOY_KEY }}
+#
+# プラグイン側の前提:
+#   - メインファイルが<slug>.phpで、ヘッダーのVersionがタグ（vを外したもの）と同じ
+#   - readme.txtがあるなら、Stable tagも同じ
+#   - 配布物の中身を決める.distignoreがある
+#   - package.jsonにbuildスクリプトがあるなら、pnpmでビルドできる（packageManagerでpnpmの版を指定している）
+
+on:
+  workflow_call:
+    inputs:
+      slug:
+        description: プラグインのslug。省くと呼び出し元のリポジトリ名
+        type: string
+        default: ''
+    secrets:
+      deploy_key:
+        description: このリポジトリに書き込めるデプロイキーの秘密鍵
+        required: true
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      SLUG: ${{ inputs.slug || github.event.repository.name }}
+      UPDATES_REPO: ejointjp/wordpress-plugin-updates
+    steps:
+      - name: Checkout plugin
+        uses: actions/checkout@v7
+        with:
+          path: plugin
+
+      - name: Checkout updates repository
+        uses: actions/checkout@v7
+        with:
+          repository: ejointjp/wordpress-plugin-updates
+          ref: main
+          ssh-key: ${{ secrets.deploy_key }}
+          path: updates
+
+      # 環境変数の名前にZIPを使わないこと。zipコマンドが既定のオプションとして読み、zipが作られなくなる
+      - name: Resolve version
+        id: version
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if [ "$GITHUB_REF_TYPE" != "tag" ] || [ "$version" = "$GITHUB_REF_NAME" ]; then
+            echo "::error::vで始まるタグのpushから呼ぶこと（ref: ${GITHUB_REF_NAME}）"
+            exit 1
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "zip=${SLUG}-${version}.zip" >> "$GITHUB_OUTPUT"
+
+      # 版の食い違い（タグ / メインファイルのVersion / readme.txtのStable tag）は、make_info.pyが止める。
+      # ビルドより前に確かめ、食い違っていれば何も作らない
+      - name: Make info.json
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          ZIP_FILE: ${{ steps.version.outputs.zip }}
+        run: |
+          if [ ! -f "plugin/${SLUG}.php" ]; then
+            echo "::error::メインファイル ${SLUG}.php がない。slugがリポジトリ名と違うなら、呼び出し側のwith:でslugを渡すこと"
+            exit 1
+          fi
+          if [ ! -f plugin/.distignore ]; then
+            echo "::error::.distignoreがない。配布物の中身を決められない"
+            exit 1
+          fi
+          if [ -e "updates/${SLUG}/${ZIP_FILE}" ]; then
+            echo "::error::${SLUG}/${ZIP_FILE}は既にある。同じ版は上書きしないので、版を上げること"
+            exit 1
+          fi
+          readme_args=()
+          if [ -f plugin/readme.txt ]; then
+            readme_args=(--readme plugin/readme.txt)
+          fi
+          python3 updates/scripts/make_info.py \
+            --main "plugin/${SLUG}.php" \
+            --slug "$SLUG" \
+            --version "$VERSION" \
+            --package "https://raw.githubusercontent.com/${UPDATES_REPO}/main/${SLUG}/${ZIP_FILE}" \
+            "${readme_args[@]}" > info.json
+          cat info.json
+
+      - name: Detect build script
+        id: build
+        working-directory: plugin
+        run: |
+          if [ -f package.json ] && python3 -c "import json, sys; sys.exit(0 if 'build' in json.load(open('package.json')).get('scripts', {}) else 1)"; then
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # pnpmの版は、プラグインのpackage.jsonのpackageManagerに解決させる
+      - name: Setup pnpm
+        if: steps.build.outputs.needed == 'true'
+        uses: pnpm/action-setup@v6
+        with:
+          package_json_file: plugin/package.json
+
+      # 各プラグインのci.ymlとローカル（Node 24）に揃える
+      - name: Setup Node.js
+        if: steps.build.outputs.needed == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: plugin/pnpm-lock.yaml
+
+      - name: Install dependencies and build
+        if: steps.build.outputs.needed == 'true'
+        working-directory: plugin
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build
+
+      # 配布物の中身は、プラグインの.distignoreが決める
+      - name: Build zip
+        env:
+          ZIP_FILE: ${{ steps.version.outputs.zip }}
+        run: |
+          mkdir -p "dist/${SLUG}"
+          rsync -a --exclude-from=plugin/.distignore --exclude='/.git' plugin/ "dist/${SLUG}/"
+          (cd dist && zip -qr "../${ZIP_FILE}" "${SLUG}")
+          unzip -l "$ZIP_FILE"
+          if ! unzip -l "$ZIP_FILE" | grep -q " ${SLUG}/${SLUG}\.php$"; then
+            echo "::error::zipに${SLUG}/${SLUG}.phpがない。.distignoreを確かめること"
+            exit 1
+          fi
+
+      # ほかのプラグインのリリースとpushがぶつかったら、取り込み直してやり直す
+      # （プラグインごとに触るディレクトリが違うので、リベースは衝突しない）
+      - name: Publish
+        working-directory: updates
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          ZIP_FILE: ${{ steps.version.outputs.zip }}
+        run: |
+          mkdir -p "$SLUG"
+          cp "../${ZIP_FILE}" "${SLUG}/${ZIP_FILE}"
+          cp ../info.json "${SLUG}/info.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$SLUG"
+          git commit -m "${SLUG} ${VERSION}"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "pushがぶつかった（${attempt}回目）。取り込み直してやり直す"
+            git pull --rebase origin main
+          done
+          echo "::error::3回やり直してもpushできなかった"
+          exit 1
