@@ -1,0 +1,15 @@
+{
+  "name": "Tiny Login Guard",
+  "slug": "tiny-login-guard",
+  "version": "0.2.0",
+  "requires": "6.4",
+  "requires_php": "7.4",
+  "tested": "7.1",
+  "author": "Takashi Fujisaki",
+  "last_updated": "2026-10-05 15:28:43",
+  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/tiny-login-guard/tiny-login-guard-0.2.0.zip",
+  "sections": {
+    "description": "<p>有効にするだけで、次の対策が働きます。設定画面はありません。</p>\n<ul><li><strong>ログインの試行回数の制限</strong>: 同じIPアドレスからログインに5回続けて失敗すると、15分間そのIPアドレスからのログインを受け付けません。数えるのはこのサイトでの失敗だけで、外部のIPアドレスのリストは使いません。ログイン画面には、あと何回失敗するとログインできなくなるかを表示します。ログイン画面そのものはいつでも開け、ログイン済みの人にも影響しません</li><li><strong>XML-RPCの停止</strong>: <code>xmlrpc.php</code>へのアクセスを拒否します。ピンバックの受信も止まります</li><li><strong>ユーザー名の非公開</strong>: ログインしていない人に、REST APIのユーザー一覧と<code>?author=N</code>を見せません。サイトマップのユーザーと、oEmbedの著者も出しません</li><li><strong>アプリケーションパスワードの無効化</strong>: パスワードの代わりにREST APIからログインする仕組みを止めます。発行済みのアプリケーションパスワードも使えなくなります</li></ul>\n<p>更新の確認のために、配布元のGitHub（<code>raw.githubusercontent.com</code>）から小さなファイル（<code>info.json</code>）を取得します。サイトのURLやデータは送りません。</p>",
+    "changelog": "<h4>0.2.0</h4>\n<ul><li>更新チェックを追加しました。新しい版がプラグイン一覧に通知され、そこから更新できます。</li><li>ピンバックの受信だけを受け付けるフィルタ（tiny_login_guard_allow_pingback）を追加しました。</li></ul>\n<h4>0.1.0</h4>\n<ul><li>最初の版。</li></ul>"
+  }
+}
