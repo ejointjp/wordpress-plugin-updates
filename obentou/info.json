@@ -1,15 +1,15 @@
 {
   "name": "Obentou Admin Pack",
   "slug": "obentou",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "requires": "6.7",
   "requires_php": "7.4",
   "tested": "7.1",
   "author": "Takashi Fujisaki",
-  "last_updated": "2026-10-07 01:09:07",
-  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/obentou/obentou-0.1.0.zip",
+  "last_updated": "2026-10-07 04:20:39",
+  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/obentou/obentou-0.2.0.zip",
   "sections": {
-    "description": "<ul><li>ID列: 投稿・固定ページ・カスタム投稿タイプ・メディア・タクソノミー・ユーザーの一覧に、チェック欄の直後へID列を出します。投稿の一覧（固定ページ・カスタム投稿タイプを含む）とタクソノミーの一覧では、検索欄に数字だけを入れると、そのIDの項目を表示します（メディアとユーザーの一覧は通常の検索です）</li><li>絞り込み: 投稿一覧の上に、タクソノミーのドロップダウンと「親で絞り込み」を出します（設定で選べます）</li><li>並び替え: 固定ページ型の投稿タイプとタクソノミーの一覧に「並び替えモード」を足し、ドラッグで並び順を決めます。保存した順序は表側の並びにも反映されます</li></ul>\n<p>設定は「設定 &gt; Obentou Admin Pack」。</p>\n<p>並び替えを使うときの注意:</p>\n<ul><li>順序の保存は<code>save_post</code>を起こしません（更新日を動かさないため）。ページキャッシュのプラグインのキャッシュは自動では消えないので、保存したあとはキャッシュを削除してください。<code>obentou_post_order_saved</code> / <code>obentou_term_order_saved</code>のアクションで連携できます</li><li>並び替えモードは全件を1ページに出します。件数の多い投稿タイプ（数千件）には向きません</li></ul>\n<p>更新の確認のために、配布元のGitHub（<code>raw.githubusercontent.com</code>）から小さなファイル（<code>info.json</code>）を取得します。サイトのURLやデータは送りません。</p>",
-    "changelog": "<h4>0.1.0</h4>\n<ul><li>初版。ID列、一覧の絞り込み、ドラッグ＆ドロップの並び替え</li></ul>"
+    "description": "<ul><li>ID列: 投稿・固定ページ・カスタム投稿タイプ・メディア・タクソノミー・ユーザーの一覧に、チェック欄の直後へID列を出します。投稿の一覧（固定ページ・カスタム投稿タイプを含む）とタクソノミーの一覧では、検索欄に数字だけを入れるとそのIDの項目を、スラッグと完全に一致する語を入れるとそのスラッグの項目を表示します（メディアとユーザーの一覧は通常の検索です）</li><li>絞り込み: 投稿一覧の上に、タクソノミーのドロップダウンと「親で絞り込み」を出します（設定で選べます）</li><li>並び替え: 固定ページ型の投稿タイプとタクソノミーの一覧に「並び替えモード」を足し、ドラッグで並び順を決めます。保存した順序は表側の並びにも反映されます</li></ul>\n<p>設定は「設定 &gt; Obentou Admin Pack」。</p>\n<p>並び替えを使うときの注意:</p>\n<ul><li>順序の保存は<code>save_post</code>を起こしません（更新日を動かさないため）。ページキャッシュのプラグインのキャッシュは自動では消えないので、保存したあとはキャッシュを削除してください。<code>obentou_post_order_saved</code> / <code>obentou_term_order_saved</code>のアクションで連携できます</li><li>並び替えモードは全件を1ページに出します。件数の多い投稿タイプ（数千件）には向きません</li></ul>\n<p>更新の確認のために、配布元のGitHub（<code>raw.githubusercontent.com</code>）から小さなファイル（<code>info.json</code>）を取得します。サイトのURLやデータは送りません。</p>",
+    "changelog": "<h4>0.2.0</h4>\n<ul><li>検索欄にスラッグを入れると、完全に一致する投稿・タームを1件表示するようにした（投稿一覧・ターム一覧）</li><li>並び替えモードでは、検索中と下書き・レビュー待ちのビューでも保存した順序で並ぶようにした</li><li>並び替えモード中に表示オプションを開いても、表示件数が総件数に変わらないようにした</li><li>保存の結果をWordPress標準の通知で出すようにし、ログイン切れ・期限切れの案内を分けた</li><li>大文字を含むタクソノミー名でも並び替えを保存できるようにした</li><li>マルチサイトで削除したとき、すべてのサイトの設定と順序を消すようにした</li></ul>\n<h4>0.1.0</h4>\n<ul><li>初版。ID列、一覧の絞り込み、ドラッグ＆ドロップの並び替え</li></ul>"
   }
 }
