@@ -1,0 +1,15 @@
+{
+  "name": "POPS – Popular Posts Ranking",
+  "slug": "pops",
+  "version": "0.1.0",
+  "requires": "6.8",
+  "requires_php": "7.4",
+  "tested": "7.1",
+  "author": "Takashi Fujisaki",
+  "last_updated": "2026-11-24 04:59:26",
+  "package": "https://raw.githubusercontent.com/ejointjp/wordpress-plugin-updates/main/pops/pops-0.1.0.zip",
+  "sections": {
+    "description": "<p>記事の閲覧数を数え、人気記事のランキングを表示します。</p>\n<ul><li>人気記事のブロック。縦に並べるリストと、横に流すスライダーの2つの形</li><li>全期間・年間・月間・週間の順位</li><li>投稿一覧の閲覧数の列と、人気記事ランキングの画面</li><li>ページキャッシュの中でも数えられます。ログインしている人の閲覧は数えません</li><li>テーマ（haku / haku2）が数えていた閲覧数を、最初に1回だけ取り込みます。元のデータは消しません</li></ul>\n<p>更新の確認でGitHub（raw.githubusercontent.com）に問い合わせます。サイトのURLやデータは送りません。そのほかの外部との通信はありません。</p>",
+    "changelog": "<h4>0.1.0</h4>\n<ul><li>最初の版</li></ul>"
+  }
+}
